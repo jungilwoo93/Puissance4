@@ -24,7 +24,7 @@ public class Grille {
 	 */
 	private Grille(Grille original)
 	{
-		//À compléter
+		this.grille = original.grille;
 	}
 	
 	/**
