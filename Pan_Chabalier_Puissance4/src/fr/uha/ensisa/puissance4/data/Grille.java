@@ -1,7 +1,5 @@
 package fr.uha.ensisa.puissance4.data;
 
-import java.util.ArrayList;
-
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 
@@ -155,11 +153,11 @@ public class Grille {
 	}
 
 	/**
-	 * Donne un score à la grille en fonction du joueur
+	 * Give a score to the "grille" according to a player
 	 * 
 	 * @param symboleJoueurCourant
 	 *            Symbol representing current player
-	 * @return la valeur de tout les alignements possibles et non bloqué
+	 * @return value of all alignment no locked and possible
 	 * @see Grille#scoreAlignementHorizontaux(Case)
 	 * @see Grille#scoreAlignementVerticaux(Case)
 	 * @see Grille#scoreAlignementDiagonalBdHg(Case)
