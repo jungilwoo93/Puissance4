@@ -163,33 +163,7 @@ public class Grille {
 	 * @see Grille#scoreAlignementDiagonalBdHg(Case)
 	 * @see Grille#scoreAlignementDiagonalBgHd(Case)
 	 */
-	public double evaluer(Case symboleJoueurCourant) {
-		class CalcThread extends Thread {
-			public int result = 0;
-			private Case symboleJoueur;
-			public CalcThread(String name, Case symboleJoueur) {
-				super(name);
-				this.symboleJoueur = symboleJoueur;
-			}
-
-			public void run() {
-				switch (this.getName()) {
-				case "horizontal":
-					this.result = scoreAlignementHorizontaux(symboleJoueur);
-					break;
-				case "vertical":
-					this.result = scoreAlignementVerticaux(symboleJoueur);
-					break;
-				case "diagonalBgHd":
-					this.result = scoreAlignementDiagonalBgHd(symboleJoueur);
-					break;
-				case "diagonalBdHg":
-					this.result = scoreAlignementDiagonalBdHg(symboleJoueur);
-					break;
-				}
-			}
-		}
-		
+	public double evaluer(Case symboleJoueurCourant) {	
 		
 		Case symboleJoueurEnnemy;
 		if(symboleJoueurCourant==Constantes.SYMBOLE_J1) {
@@ -197,26 +171,18 @@ public class Grille {
 		}else {
 			symboleJoueurEnnemy = Constantes.SYMBOLE_J1;
 		}
-		
-		CalcThread c1 = new CalcThread("horizontal",symboleJoueurCourant);
-		CalcThread c2 = new CalcThread("vertical",symboleJoueurCourant);
-		CalcThread c3 = new CalcThread("diagonalBgHd",symboleJoueurCourant);
-		CalcThread c4 = new CalcThread("diagonalBdHg",symboleJoueurCourant);
-		c1.start();
-		c2.start();
-		c3.start();
-		c4.start();
-		
-		CalcThread c12 = new CalcThread("horizontal",symboleJoueurEnnemy);
-		CalcThread c22 = new CalcThread("vertical",symboleJoueurEnnemy);
-		CalcThread c32 = new CalcThread("diagonalBgHd",symboleJoueurEnnemy);
-		CalcThread c42 = new CalcThread("diagonalBdHg",symboleJoueurEnnemy);
-		c1.start();
-		c2.start();
-		c3.start();
-		c4.start();
 
-		return (c1.result + c2.result + c3.result + c4.result) - (c12.result + c22.result + c32.result + c42.result);
+		int c1 = scoreAlignementHorizontaux(symboleJoueurCourant);
+		int c2 = scoreAlignementVerticaux(symboleJoueurCourant);
+		int c3 = scoreAlignementDiagonalBgHd(symboleJoueurCourant);
+		int c4 = scoreAlignementDiagonalBdHg(symboleJoueurCourant);
+		
+		int c12 = scoreAlignementHorizontaux(symboleJoueurEnnemy);
+		int c22 = scoreAlignementVerticaux(symboleJoueurEnnemy);
+		int c32 = scoreAlignementDiagonalBgHd(symboleJoueurEnnemy);
+		int c42 = scoreAlignementDiagonalBdHg(symboleJoueurEnnemy);
+		
+		return (c1 + c2 + c3 + c4) - (c12 + c22 + c32 + c42);
 	}
 
 	/**
