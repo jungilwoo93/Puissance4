@@ -30,6 +30,9 @@ public abstract class Constantes {
 	//Affectation  des symboles aux joueurs
 	public static final Case SYMBOLE_J1 = Case.X;
 	public static final Case SYMBOLE_J2 = Case.O;
+	public static final Case SYMBOLE_V = Case.V;
+	
+	
 	
 	//Définition de la taille de la grille
 	public static final int NB_COLONNES = 7;
