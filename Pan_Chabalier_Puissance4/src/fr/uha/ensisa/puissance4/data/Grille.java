@@ -25,7 +25,7 @@ public class Grille {
 	private Grille(Grille original) {
 		this.grille = original.grille;
 	}
-	
+
 	/**
 	 * Clone la grille
 	 */
@@ -158,18 +158,58 @@ public class Grille {
 	 * Donne un score à la grille en fonction du joueur
 	 * 
 	 * @param symboleJoueurCourant
-	 * @return
+	 *            Symbol representing current player
+	 * @return la valeur de tout les alignements possibles et non bloqué
+	 * @see Grille#scoreAlignementHorizontaux(Case)
+	 * @see Grille#scoreAlignementVerticaux(Case)
+	 * @see Grille#scoreAlignementDiagonalBdHg(Case)
+	 * @see Grille#scoreAlignementDiagonalBgHd(Case)
 	 */
 	public double evaluer(Case symboleJoueurCourant) {
-		// TODO
-		return 0;
+		class CalcThread extends Thread {
+			public int result = 0;
+
+			public CalcThread(String name) {
+				super(name);
+			}
+
+			public void run() {
+				switch (this.getName()) {
+				case "horizontal":
+					this.result = scoreAlignementHorizontaux(symboleJoueurCourant);
+					break;
+				case "vertical":
+					this.result = scoreAlignementVerticaux(symboleJoueurCourant);
+					break;
+				case "diagonalBgHd":
+					this.result = scoreAlignementDiagonalBgHd(symboleJoueurCourant);
+					break;
+				case "diagonalBdHg":
+					this.result = scoreAlignementDiagonalBdHg(symboleJoueurCourant);
+					break;
+				}
+			}
+		}
+		CalcThread c1 = new CalcThread("horizontal");
+		CalcThread c2 = new CalcThread("vertical");
+		CalcThread c3 = new CalcThread("diagonalBgHd");
+		CalcThread c4 = new CalcThread("diagonalBdHg");
+		c1.start();
+		c2.start();
+		c3.start();
+		c4.start();
+
+		return c1.result + c2.result + c3.result + c4.result;
 	}
 
 	/**
-	 * calculate the player score with taking all horizontal coin aligned. alignment of 1 = 10 points, 2 = 100 points,
-	 *  3 = 1000 points and 4 = 10000 points
-	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
-	 * @param symboleJoueurCourant Symbol representing current player
+	 * calculate the player score with taking all horizontal coin aligned. alignment
+	 * of 1 = 10 points, 2 = 100 points, 3 = 1000 points and 4 = 10000 points
+	 * Alignment locked (can't be ended by fault of bounds or enemy coin) are not
+	 * counted
+	 * 
+	 * @param symboleJoueurCourant
+	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
 	public int scoreAlignementHorizontaux(Case symboleJoueurCourant) {
@@ -209,10 +249,13 @@ public class Grille {
 	}
 
 	/**
-	 * calculate the player score with taking all vertical coin aligned. alignment of 1 = 10 points, 2 = 100 points,
-	 *  3 = 1000 points and 4 = 10000 points
-	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
-	 * @param symboleJoueurCourant Symbol representing current player
+	 * calculate the player score with taking all vertical coin aligned. alignment
+	 * of 1 = 10 points, 2 = 100 points, 3 = 1000 points and 4 = 10000 points
+	 * Alignment locked (can't be ended by fault of bounds or enemy coin) are not
+	 * counted
+	 * 
+	 * @param symboleJoueurCourant
+	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
 	public int scoreAlignementVerticaux(Case symboleJoueurCourant) {
@@ -252,10 +295,13 @@ public class Grille {
 	}
 
 	/**
-	 * calculate the player score with taking all diagonal coin aligned (lower-right to upper-left). alignment of 1 = 10 points, 2 = 100 points,
-	 *  3 = 1000 points and 4 = 10000 points
-	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
-	 * @param symboleJoueurCourant Symbol representing current player
+	 * calculate the player score with taking all diagonal coin aligned (lower-right
+	 * to upper-left). alignment of 1 = 10 points, 2 = 100 points, 3 = 1000 points
+	 * and 4 = 10000 points Alignment locked (can't be ended by fault of bounds or
+	 * enemy coin) are not counted
+	 * 
+	 * @param symboleJoueurCourant
+	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
 	public int scoreAlignementDiagonalBdHg(Case symboleJoueurCourant) {
@@ -296,10 +342,13 @@ public class Grille {
 	}
 
 	/**
-	 * calculate the player score with taking all diagonal coin aligned (lower-left to upper-right). alignment of 1 = 10 points, 2 = 100 points,
-	 *  3 = 1000 points and 4 = 10000 points
-	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
-	 * @param symboleJoueurCourant Symbol representing current player
+	 * calculate the player score with taking all diagonal coin aligned (lower-left
+	 * to upper-right). alignment of 1 = 10 points, 2 = 100 points, 3 = 1000 points
+	 * and 4 = 10000 points Alignment locked (can't be ended by fault of bounds or
+	 * enemy coin) are not counted
+	 * 
+	 * @param symboleJoueurCourant
+	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
 	public int scoreAlignementDiagonalBgHd(Case symboleJoueurCourant) {
