@@ -166,38 +166,57 @@ public class Grille {
 	public double evaluer(Case symboleJoueurCourant) {
 		class CalcThread extends Thread {
 			public int result = 0;
-
-			public CalcThread(String name) {
+			private Case symboleJoueur;
+			public CalcThread(String name, Case symboleJoueur) {
 				super(name);
+				this.symboleJoueur = symboleJoueur;
 			}
 
 			public void run() {
 				switch (this.getName()) {
 				case "horizontal":
-					this.result = scoreAlignementHorizontaux(symboleJoueurCourant);
+					this.result = scoreAlignementHorizontaux(symboleJoueur);
 					break;
 				case "vertical":
-					this.result = scoreAlignementVerticaux(symboleJoueurCourant);
+					this.result = scoreAlignementVerticaux(symboleJoueur);
 					break;
 				case "diagonalBgHd":
-					this.result = scoreAlignementDiagonalBgHd(symboleJoueurCourant);
+					this.result = scoreAlignementDiagonalBgHd(symboleJoueur);
 					break;
 				case "diagonalBdHg":
-					this.result = scoreAlignementDiagonalBdHg(symboleJoueurCourant);
+					this.result = scoreAlignementDiagonalBdHg(symboleJoueur);
 					break;
 				}
 			}
 		}
-		CalcThread c1 = new CalcThread("horizontal");
-		CalcThread c2 = new CalcThread("vertical");
-		CalcThread c3 = new CalcThread("diagonalBgHd");
-		CalcThread c4 = new CalcThread("diagonalBdHg");
+		
+		
+		Case symboleJoueurEnnemy;
+		if(symboleJoueurCourant==Constantes.SYMBOLE_J1) {
+			symboleJoueurEnnemy = Constantes.SYMBOLE_J2;
+		}else {
+			symboleJoueurEnnemy = Constantes.SYMBOLE_J1;
+		}
+		
+		CalcThread c1 = new CalcThread("horizontal",symboleJoueurCourant);
+		CalcThread c2 = new CalcThread("vertical",symboleJoueurCourant);
+		CalcThread c3 = new CalcThread("diagonalBgHd",symboleJoueurCourant);
+		CalcThread c4 = new CalcThread("diagonalBdHg",symboleJoueurCourant);
+		c1.start();
+		c2.start();
+		c3.start();
+		c4.start();
+		
+		CalcThread c12 = new CalcThread("horizontal",symboleJoueurEnnemy);
+		CalcThread c22 = new CalcThread("vertical",symboleJoueurEnnemy);
+		CalcThread c32 = new CalcThread("diagonalBgHd",symboleJoueurEnnemy);
+		CalcThread c42 = new CalcThread("diagonalBdHg",symboleJoueurEnnemy);
 		c1.start();
 		c2.start();
 		c3.start();
 		c4.start();
 
-		return c1.result + c2.result + c3.result + c4.result;
+		return (c1.result + c2.result + c3.result + c4.result) - (c12.result + c22.result + c32.result + c42.result);
 	}
 
 	/**
