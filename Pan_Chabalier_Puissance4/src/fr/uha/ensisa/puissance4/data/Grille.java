@@ -25,6 +25,14 @@ public class Grille {
 	private Grille(Grille original) {
 		this.grille = original.grille;
 	}
+	
+	/**
+	 * Clone la grille
+	 */
+	public Grille clone() {
+		Grille copy = new Grille(this);
+		return copy;
+	}
 
 	/**
 	 * Renvoie le contenu de la case aux coordonnées données en argument
@@ -157,10 +165,17 @@ public class Grille {
 		return 0;
 	}
 
-	public int nbAlignementHorizontaux(Case symboleJoueurCourant) {
+	/**
+	 * calculate the player score with taking all horizontal coin aligned. alignment of 1 = 10 points, 2 = 100 points,
+	 *  3 = 1000 points and 4 = 10000 points
+	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
+	 * @param symboleJoueurCourant Symbol representing current player
+	 * @return the score of the player
+	 */
+	public int scoreAlignementHorizontaux(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
-		// Vérification alignement horizontal
+		// Vérification horizontal alignement
 		for (int i = 0; i < Constantes.NB_LIGNES; i++) {
 			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
 				if (grille[j][i] == symboleJoueurCourant)
@@ -193,7 +208,14 @@ public class Grille {
 		return nbAlignGood;
 	}
 
-	public int nbAlignementVerticaux(Case symboleJoueurCourant) {
+	/**
+	 * calculate the player score with taking all vertical coin aligned. alignment of 1 = 10 points, 2 = 100 points,
+	 *  3 = 1000 points and 4 = 10000 points
+	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
+	 * @param symboleJoueurCourant Symbol representing current player
+	 * @return the score of the player
+	 */
+	public int scoreAlignementVerticaux(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification alignement vertical
@@ -229,7 +251,14 @@ public class Grille {
 		return nbAlignGood;
 	}
 
-	public int nbAlignementDiagonalBdHg(Case symboleJoueurCourant) {
+	/**
+	 * calculate the player score with taking all diagonal coin aligned (lower-right to upper-left). alignment of 1 = 10 points, 2 = 100 points,
+	 *  3 = 1000 points and 4 = 10000 points
+	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
+	 * @param symboleJoueurCourant Symbol representing current player
+	 * @return the score of the player
+	 */
+	public int scoreAlignementDiagonalBdHg(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification alignement diagonaux (bas-droite vers haut-gauche)
@@ -266,7 +295,14 @@ public class Grille {
 		return nbAlignGood;
 	}
 
-	public int nbAlignementDiagonalBgHd(Case symboleJoueurCourant) {
+	/**
+	 * calculate the player score with taking all diagonal coin aligned (lower-left to upper-right). alignment of 1 = 10 points, 2 = 100 points,
+	 *  3 = 1000 points and 4 = 10000 points
+	 *  Alignment locked (can't be ended by fault of bounds or enemy coin) are not counted
+	 * @param symboleJoueurCourant Symbol representing current player
+	 * @return the score of the player
+	 */
+	public int scoreAlignementDiagonalBgHd(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification alignement diagonaux (bas-gauche vers haut-droit)
@@ -301,14 +337,6 @@ public class Grille {
 			}
 
 		return nbAlignGood;
-	}
-
-	/**
-	 * Clone la grille
-	 */
-	public Grille clone() {
-		Grille copy = new Grille(this);
-		return copy;
 	}
 
 }
