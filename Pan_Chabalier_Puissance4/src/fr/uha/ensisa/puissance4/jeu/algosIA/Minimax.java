@@ -13,58 +13,57 @@ public class Minimax extends Algorithm {
 
 	@Override
 	public int choisirCoup() {
-
-		Grille grille = grilleDepart;
-		int profondeur = levelIA;
-		int meilleurCoup = -1;
-		double max_val = Constantes.SCORE_MIN_NON_DEFINI;
-		for (int coup_actuel = 0; coup_actuel < Constantes.NB_COLONNES; coup_actuel++) {
-			Grille g = grille.clone();
-			g.ajouterCoup(coup_actuel, symboleMax);
-			int val = min(g, profondeur);
-
-			if (val > max_val) {
-				max_val = val;
-				meilleurCoup = coup_actuel;
+		double maxVal = Constantes.SCORE_MAX_NON_DEFINI;
+		int meilleurCoup = Constantes.COUP_NON_DEFINI;
+		int tourSimule = 0;
+		for(int coup = 0;coup<Constantes.NB_COLONNES;coup++) {
+			int profondeur = this.levelIA;
+			Grille virtualGrille = this.grilleDepart.clone();
+			virtualGrille.ajouterCoup(coup, symboleMax);
+			double val =  min(virtualGrille,profondeur-1,tourSimule);
+			if(val > maxVal) {
+				maxVal= val;
+				meilleurCoup = coup;
 			}
-			grille = grilleDepart;
 		}
+		
 		return meilleurCoup;
 	}
 
-	public int min(Grille grille, int profondeur) {
-		if (profondeur == 0 || grille.getEtatPartie(symboleMax, tourDepart + profondeur) != Constantes.PARTIE_EN_COURS) {
-			return (int) grille.evaluer(symboleMax);
+	private double min(Grille grille, int profondeur,int tourSimule) {
+		if (profondeur == 0
+				|| grille.getEtatPartie(symboleMin, tourDepart + profondeur) != Constantes.PARTIE_EN_COURS) {
+			return grille.evaluer(symboleMin);
 		}
-		double min_val = Constantes.SCORE_MIN_NON_DEFINI;
-		for (int coup_actuel = 0; coup_actuel < Constantes.NB_COLONNES; coup_actuel++) {
-			Grille g = grille.clone();
-			g.ajouterCoup(coup_actuel, symboleMin);
-			double val = max(g, profondeur - 1);
-
-			if (val < min_val) {
-				min_val = val;
+		tourSimule++;
+		double minVal = Constantes.SCORE_MIN_NON_DEFINI;
+		for(int coup = 0;coup<Constantes.NB_COLONNES;coup++) {
+			Grille virtualGrille = grille.clone();
+			virtualGrille.ajouterCoup(coup, symboleMin);
+			double val =  max(virtualGrille,profondeur-1,tourSimule);
+			if(val < minVal) {
+				minVal = val;
 			}
-		}
-
-		return (int) min_val;
+		}		
+		return minVal;
 	}
 
-	public int max(Grille grille, int profondeur) {
-		if (profondeur == 0 || grille.getEtatPartie(symboleMax, tourDepart + profondeur) != Constantes.PARTIE_EN_COURS) {
-			return (int) grille.evaluer(symboleMax);
+	private double max(Grille grille, int profondeur,int tourSimule) {
+		if (profondeur == 0
+				|| grille.getEtatPartie(symboleMax, tourDepart + profondeur) != Constantes.PARTIE_EN_COURS) {
+			return grille.evaluer(symboleMax);
 		}
-		double max_val = Constantes.SCORE_MIN_NON_DEFINI;
-		for (int coup_actuel = 0; coup_actuel < Constantes.NB_COLONNES; coup_actuel++) {
-			Grille g = grille.clone();
-			g.ajouterCoup(coup_actuel, symboleMax);
-			double val = min(g, profondeur - 1);
-
-			if (val > max_val) {
-				max_val = val;
+		tourSimule++;
+		double maxVal = Constantes.SCORE_MAX_NON_DEFINI;
+		for(int coup = 0;coup<Constantes.NB_COLONNES;coup++) {
+			Grille virtualGrille = grille.clone();
+			virtualGrille.ajouterCoup(coup, symboleMax);
+			double val =  min(virtualGrille,profondeur-1,tourSimule);
+			if(val > maxVal) {
+				maxVal= val;
 			}
-		}
-
-		return (int) max_val;
+		}		
+		return maxVal;
 	}
+
 }

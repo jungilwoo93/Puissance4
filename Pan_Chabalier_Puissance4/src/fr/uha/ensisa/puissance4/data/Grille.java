@@ -42,6 +42,10 @@ public class Grille {
 	public Case getCase(int ligne, int colonne) {
 		return grille[colonne][ligne];
 	}
+	
+	public void setCase(int ligne, int colonne,Case value) {
+		this.grille[colonne][ligne] = value;
+	}
 
 	/**
 	 * Indique s'il y a encore de la place dans la colonne indiquée
@@ -73,7 +77,32 @@ public class Grille {
 		}
 
 	}
+	
+	/**
+	 * retire le dernier symbole indiquée de la colonne indiquée
+	 * @param colonne
+	 * @param symbole
+	 */
+	public void annulerCoup(int colonne, Case symbole) {
+		for (int j = Constantes.NB_LIGNES-1; 0 <= j; j--) {
+			if (grille[colonne][j] == symbole) {
+				grille[colonne][j] = Case.V;
+				break;
+			}
+		}
+	}
 
+	/**
+	 * permet de simuler un coup, sans affichage. 
+	 * /!\ WARNING /!\ doit être annulé par la suite avec @see {@link Grille#annulerCoup(int, Case)}
+	 * @param coup_actuel
+	 * @param symboleMax
+	 */
+	public void simulerCoup(int coup_actuel, Case symboleMax) {
+		// TODO Auto-generated method stub
+		ajouterCoup(coup_actuel,symboleMax);
+	}
+	
 	/**
 	 * Renvoie l'état de la partie
 	 * 
@@ -195,7 +224,7 @@ public class Grille {
 	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
-	public int scoreAlignementHorizontaux(Case symboleJoueurCourant) {
+	private int scoreAlignementHorizontaux(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification horizontal alignement
@@ -241,7 +270,7 @@ public class Grille {
 	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
-	public int scoreAlignementVerticaux(Case symboleJoueurCourant) {
+	private int scoreAlignementVerticaux(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification alignement vertical
@@ -287,7 +316,7 @@ public class Grille {
 	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
-	public int scoreAlignementDiagonalBdHg(Case symboleJoueurCourant) {
+	private int scoreAlignementDiagonalBdHg(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification alignement diagonaux (bas-droite vers haut-gauche)
@@ -334,7 +363,7 @@ public class Grille {
 	 *            Symbol representing current player
 	 * @return the score of the player
 	 */
-	public int scoreAlignementDiagonalBgHd(Case symboleJoueurCourant) {
+	private int scoreAlignementDiagonalBgHd(Case symboleJoueurCourant) {
 		int nbAlignGood = 0;
 		int nbAlignes = 0;
 		// Vérification alignement diagonaux (bas-gauche vers haut-droit)
@@ -370,5 +399,7 @@ public class Grille {
 
 		return nbAlignGood;
 	}
+
+
 
 }
