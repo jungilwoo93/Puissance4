@@ -23,7 +23,8 @@ public class AlphaBeta extends Algorithm {
 	/**
 	 * Retourne le meilleur coup d'après la difficulté de l'IA et l'état de la
 	 * grille
-	 * Utilise le calcul parrallele pour raccourcir le temps de reflexion de l'IA
+	 * Utilise le calcul parallele pour raccourcir le temps de reflexion de l'IA
+	 * Un pool de Threads gère la paralelisation
 	 * @return Le meilleur coup
 	 */
 	@Override

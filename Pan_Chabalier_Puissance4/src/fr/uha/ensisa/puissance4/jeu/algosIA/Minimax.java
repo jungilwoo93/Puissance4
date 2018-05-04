@@ -12,9 +12,15 @@ import fr.uha.ensisa.puissance4.util.Constantes;
 
 public class Minimax extends Algorithm {
 
+	ExecutorService threadPoolExecutor;
+	
 	public Minimax(int levelIA, Grille grilleDepart, Joueur joueurActuel, int tour) {
 		super(levelIA, grilleDepart, joueurActuel, tour);
-
+		int corePoolSize = 0;
+		int maxPoolSize = Integer.MAX_VALUE;
+		long keepAliveTime = 5000;
+		this.threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime,
+				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 	}
 
 	/**
@@ -26,15 +32,12 @@ public class Minimax extends Algorithm {
 	 */
 	@Override
 	public int choisirCoup() {
-		int corePoolSize = 0;
-		int maxPoolSize = Integer.MAX_VALUE;
-		long keepAliveTime = 5000;
+
 		
 		int tourSimule = 0;
 		TreeMap<Double, Integer> result = new TreeMap<Double, Integer>(Double::compare);
 
-		ExecutorService threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime,
-				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+		
 
 		for (int i = 0; i < Constantes.NB_COLONNES; i++) {
 			final int coup = i;
