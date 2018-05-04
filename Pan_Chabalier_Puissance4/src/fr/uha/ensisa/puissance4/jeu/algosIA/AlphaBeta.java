@@ -1,5 +1,11 @@
 package fr.uha.ensisa.puissance4.jeu.algosIA;
 
+import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.util.Constantes;
@@ -15,34 +21,61 @@ public class AlphaBeta extends Algorithm {
 	}
 
 	/**
-	 * Retourne le meilleur coup d'après la difficulté de l'IA et l'état de la grille
+	 * Retourne le meilleur coup d'après la difficulté de l'IA et l'état de la
+	 * grille
+	 * Utilise le calcul parrallele pour raccourcir le temps de reflexion de l'IA
 	 * @return Le meilleur coup
 	 */
 	@Override
 	public int choisirCoup() {
-		double maxVal = Constantes.SCORE_MAX_NON_DEFINI;
-		int meilleurCoup = Constantes.COUP_NON_DEFINI;
+		int corePoolSize = 0;
+		int maxPoolSize = Integer.MAX_VALUE;
+		long keepAliveTime = 5000;
+		
 		int tourSimule = 0;
-		for (int coup = 0; coup < Constantes.NB_COLONNES; coup++) {
-			int profondeur = this.levelIA;
-			Grille virtualGrille = new Grille(grilleDepart.getGrille());
-			virtualGrille.ajouterCoup(coup, symboleMax);
-			double val = minValue(virtualGrille, profondeur - 1, tourSimule);
-			if (val > maxVal) {
-				maxVal = val;
-				meilleurCoup = coup;
-			}
+		TreeMap<Double, Integer> result = new TreeMap<Double, Integer>(Double::compare);
+
+		ExecutorService threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime,
+				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+
+		for (int i = 0; i < Constantes.NB_COLONNES; i++) {
+			final int coup = i;
+
+			threadPoolExecutor.submit(new Runnable() { //we submit new task to explore a branch of the decision tree
+
+				@Override
+				public void run() {
+					int profondeur = levelIA;
+					Grille virtualGrille = new Grille(grilleDepart.getGrille());
+					virtualGrille.ajouterCoup(coup, symboleMax);
+					double val = minValue(virtualGrille, profondeur - 1, tourSimule);
+
+					result.put(val, coup);
+				}
+			});
 		}
-		return meilleurCoup;
+
+		try {
+			threadPoolExecutor.shutdown(); //Lock the Pool, execute all previous submited task.
+			threadPoolExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS); //Wait for task's execution
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return result.firstEntry().getValue(); //The first entry of the map is the best play
 	}
 
 	/**
 	 * permet de retourner la valeur minimale des noeuds inferieurs. On essaye ici
 	 * de minimiser le jeu de l'adversaire On elague l'arbre de jeu selon
 	 * l'algorithme alpha-beta
-	 * @param grille grille simulée. Reflète la grille de depart et les reflexions
-	 * @param profondeur  profondeur actuelle du noeud
-	 * @param tourSimule tour "virtuel" correspond au tour du noeud simulé.
+	 * 
+	 * @param grille
+	 *            grille simulée. Reflète la grille de depart et les reflexions
+	 * @param profondeur
+	 *            profondeur actuelle du noeud
+	 * @param tourSimule
+	 *            tour "virtuel" correspond au tour du noeud simulé.
 	 * @return la valeur minimale des noeuds enfants
 	 */
 	private double minValue(Grille grille, int profondeur, int tourSimule) {
