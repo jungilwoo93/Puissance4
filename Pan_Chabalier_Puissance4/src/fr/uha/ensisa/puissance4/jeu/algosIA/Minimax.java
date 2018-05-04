@@ -18,7 +18,7 @@ public class Minimax extends Algorithm {
 		int tourSimule = 0;
 		for(int coup = 0;coup<Constantes.NB_COLONNES;coup++) {
 			int profondeur = this.levelIA;
-			Grille virtualGrille = this.grilleDepart.clone();
+			Grille virtualGrille = new Grille(grilleDepart.getGrille());
 			virtualGrille.ajouterCoup(coup, symboleMax);
 			double val =  min(virtualGrille,profondeur-1,tourSimule);
 			if(val > maxVal) {
@@ -26,7 +26,7 @@ public class Minimax extends Algorithm {
 				meilleurCoup = coup;
 			}
 		}
-		
+		System.out.println(grilleDepart.toString());
 		return meilleurCoup;
 	}
 

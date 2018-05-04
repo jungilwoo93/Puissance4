@@ -15,6 +15,17 @@ public class Grille {
 			}
 	}
 
+	public Grille(Case[][] cases) {
+		grille = new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
+		// System.arraycopy(cases, 0, this.grille, 0, cases.length);
+		for (int i = 0; i < Constantes.NB_COLONNES; i++)
+			for (int j = 0; j < Constantes.NB_LIGNES; j++) {
+				grille[i][j] = cases[i][j];
+			}
+	}
+
+	
+
 	/**
 	 * Constructeur qui créé une copie de la grille donné en argument
 	 * 
@@ -42,9 +53,17 @@ public class Grille {
 	public Case getCase(int ligne, int colonne) {
 		return grille[colonne][ligne];
 	}
-	
-	public void setCase(int ligne, int colonne,Case value) {
+
+	public void setCase(int ligne, int colonne, Case value) {
 		this.grille[colonne][ligne] = value;
+	}
+
+	public void setGrille(Case[][] grille) {
+		this.grille = grille;
+	}
+
+	public Case[][] getGrille() {
+		return this.grille;
 	}
 
 	/**
@@ -77,14 +96,15 @@ public class Grille {
 		}
 
 	}
-	
+
 	/**
 	 * retire le dernier symbole indiquée de la colonne indiquée
+	 * 
 	 * @param colonne
 	 * @param symbole
 	 */
 	public void annulerCoup(int colonne, Case symbole) {
-		for (int j = Constantes.NB_LIGNES-1; 0 <= j; j--) {
+		for (int j = Constantes.NB_LIGNES - 1; 0 <= j; j--) {
 			if (grille[colonne][j] == symbole) {
 				grille[colonne][j] = Case.V;
 				break;
@@ -93,16 +113,17 @@ public class Grille {
 	}
 
 	/**
-	 * permet de simuler un coup, sans affichage. 
-	 * /!\ WARNING /!\ doit être annulé par la suite avec @see {@link Grille#annulerCoup(int, Case)}
+	 * permet de simuler un coup, sans affichage. /!\ WARNING /!\ doit être annulé
+	 * par la suite avec @see {@link Grille#annulerCoup(int, Case)}
+	 * 
 	 * @param coup_actuel
 	 * @param symboleMax
 	 */
 	public void simulerCoup(int coup_actuel, Case symboleMax) {
 		// TODO Auto-generated method stub
-		ajouterCoup(coup_actuel,symboleMax);
+		ajouterCoup(coup_actuel, symboleMax);
 	}
-	
+
 	/**
 	 * Renvoie l'état de la partie
 	 * 
@@ -192,12 +213,12 @@ public class Grille {
 	 * @see Grille#scoreAlignementDiagonalBdHg(Case)
 	 * @see Grille#scoreAlignementDiagonalBgHd(Case)
 	 */
-	public double evaluer(Case symboleJoueurCourant) {	
-		
+	public double evaluer(Case symboleJoueurCourant) {
+
 		Case symboleJoueurEnnemy;
-		if(symboleJoueurCourant==Constantes.SYMBOLE_J1) {
+		if (symboleJoueurCourant == Constantes.SYMBOLE_J1) {
 			symboleJoueurEnnemy = Constantes.SYMBOLE_J2;
-		}else {
+		} else {
 			symboleJoueurEnnemy = Constantes.SYMBOLE_J1;
 		}
 
@@ -205,12 +226,12 @@ public class Grille {
 		int c2 = scoreAlignementVerticaux(symboleJoueurCourant);
 		int c3 = scoreAlignementDiagonalBgHd(symboleJoueurCourant);
 		int c4 = scoreAlignementDiagonalBdHg(symboleJoueurCourant);
-		
+
 		int c12 = scoreAlignementHorizontaux(symboleJoueurEnnemy);
 		int c22 = scoreAlignementVerticaux(symboleJoueurEnnemy);
 		int c32 = scoreAlignementDiagonalBgHd(symboleJoueurEnnemy);
 		int c42 = scoreAlignementDiagonalBdHg(symboleJoueurEnnemy);
-		
+
 		return (c1 + c2 + c3 + c4) - (c12 + c22 + c32 + c42);
 	}
 
@@ -400,6 +421,30 @@ public class Grille {
 		return nbAlignGood;
 	}
 
+	public String toString() {
+		String s = "";
+		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
+			s += "|";
+			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+				String symbol;
+				if (this.getCase(i, j) == Case.V)
+					symbol = " ";
+				else
+					symbol = this.getCase(i, j).toString();
 
+				s += symbol + "|";
+			}
+			s += "\n";
+		}
+		s += "=";
+		for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+			s += "==";
+		}
+		s += "\n";
+		for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+			s += " " + (j + 1);
+		}
+		return s;
+	}
 
 }
