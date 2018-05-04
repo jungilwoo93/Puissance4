@@ -53,7 +53,7 @@ public class AlphaBeta extends Algorithm {
 		tourSimule++;
 		double minVal = Constantes.SCORE_MIN_NON_DEFINI;
 		for (int coup = 0; coup < Constantes.NB_COLONNES; coup++) {
-			Grille virtualGrille = grille.clone();
+			Grille virtualGrille = new Grille(grille.getGrille());
 			virtualGrille.ajouterCoup(coup, symboleMin);
 			double val = maxValue(virtualGrille, profondeur - 1, tourSimule);
 			if (val < minVal) {
@@ -88,7 +88,7 @@ public class AlphaBeta extends Algorithm {
 		tourSimule++;
 		double maxVal = Constantes.SCORE_MAX_NON_DEFINI;
 		for (int coup = 0; coup < Constantes.NB_COLONNES; coup++) {
-			Grille virtualGrille = grille.clone();
+			Grille virtualGrille = new Grille(grille.getGrille());
 			virtualGrille.ajouterCoup(coup, symboleMax);
 			double val = minValue(virtualGrille, profondeur - 1, tourSimule);
 			if (val > maxVal) {

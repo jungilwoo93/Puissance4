@@ -17,7 +17,6 @@ public class Grille {
 
 	public Grille(Case[][] cases) {
 		grille = new Case[Constantes.NB_COLONNES][Constantes.NB_LIGNES];
-		// System.arraycopy(cases, 0, this.grille, 0, cases.length);
 		for (int i = 0; i < Constantes.NB_COLONNES; i++)
 			for (int j = 0; j < Constantes.NB_LIGNES; j++) {
 				grille[i][j] = cases[i][j];
