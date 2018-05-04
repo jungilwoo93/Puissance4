@@ -11,6 +11,10 @@ public class Minimax extends Algorithm {
 
 	}
 
+	/**
+	 * Retourne le meilleur coup d'après la difficulté de l'IA et l'état de la grille
+	 * @return Le meilleur coup
+	 */
 	@Override
 	public int choisirCoup() {
 		double maxVal = Constantes.SCORE_MAX_NON_DEFINI;
@@ -20,19 +24,25 @@ public class Minimax extends Algorithm {
 			int profondeur = this.levelIA;
 			Grille virtualGrille = new Grille(grilleDepart.getGrille());
 			virtualGrille.ajouterCoup(coup, symboleMax);
-			double val =  min(virtualGrille,profondeur-1,tourSimule);
+			double val =  minValue(virtualGrille,profondeur-1,tourSimule);
 			if(val > maxVal) {
 				maxVal= val;
 				meilleurCoup = coup;
 			}
 		}
-		System.out.println(grilleDepart.toString());
 		return meilleurCoup;
 	}
-
-	private double min(Grille grille, int profondeur,int tourSimule) {
+	
+	/**
+	 * permet de retourner la valeur minimale des noeuds inferieurs. On essaye ici de minimiser le jeu de l'adversaire
+	 * @param grille grille simulée. Reflète la grille de depart et les reflexions
+	 * @param profondeur profondeur actuelle du noeud
+	 * @param tourSimule tour "virtuel" correspond au tour du noeud simulé. 
+	 * @return la valeur minimale des noeuds enfants
+	 */
+	private double minValue(Grille grille, int profondeur,int tourSimule) {
 		if (profondeur == 0
-				|| grille.getEtatPartie(symboleMin, tourDepart + profondeur) != Constantes.PARTIE_EN_COURS) {
+				|| grille.getEtatPartie(symboleMin, tourDepart + profondeur + tourSimule) != Constantes.PARTIE_EN_COURS) {
 			return grille.evaluer(symboleMin);
 		}
 		tourSimule++;
@@ -40,7 +50,7 @@ public class Minimax extends Algorithm {
 		for(int coup = 0;coup<Constantes.NB_COLONNES;coup++) {
 			Grille virtualGrille = grille.clone();
 			virtualGrille.ajouterCoup(coup, symboleMin);
-			double val =  max(virtualGrille,profondeur-1,tourSimule);
+			double val =  maxValue(virtualGrille,profondeur-1,tourSimule);
 			if(val < minVal) {
 				minVal = val;
 			}
@@ -48,9 +58,16 @@ public class Minimax extends Algorithm {
 		return minVal;
 	}
 
-	private double max(Grille grille, int profondeur,int tourSimule) {
+	/**
+	 * permet de retourner la valeur maximale des noeuds inferieurs. On essaye ici de maximiser le jeu du joueur
+	 * @param grille grille simulée. Reflète la grille de depart et les reflexions
+	 * @param profondeur profondeur actuelle du noeud
+	 * @param tourSimule tour "virtuel" correspond au tour du noeud simulé. 
+	 * @return la valeur maximale des noeuds enfants
+	 */
+	private double maxValue(Grille grille, int profondeur,int tourSimule) {
 		if (profondeur == 0
-				|| grille.getEtatPartie(symboleMax, tourDepart + profondeur) != Constantes.PARTIE_EN_COURS) {
+				|| grille.getEtatPartie(symboleMax, tourDepart + profondeur + tourSimule) != Constantes.PARTIE_EN_COURS) {
 			return grille.evaluer(symboleMax);
 		}
 		tourSimule++;
@@ -58,7 +75,7 @@ public class Minimax extends Algorithm {
 		for(int coup = 0;coup<Constantes.NB_COLONNES;coup++) {
 			Grille virtualGrille = grille.clone();
 			virtualGrille.ajouterCoup(coup, symboleMax);
-			double val =  min(virtualGrille,profondeur-1,tourSimule);
+			double val =  minValue(virtualGrille,profondeur-1,tourSimule);
 			if(val > maxVal) {
 				maxVal= val;
 			}
