@@ -324,10 +324,11 @@ public class GameController extends Thread implements Initializable {
 	}
 
 	private void afficheGrille(Grille grille) {
-		for (int i = 0; i < Constantes.NB_LIGNES; i++) {
-			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+		for (int i = Constantes.NB_LIGNES-1; i >= 0; i--) {
+			for (int j=0;j<Constantes.NB_COLONNES;j++) {
 				if(grille.getCase(i, j) == Constantes.SYMBOLE_J1) {
 					cases.get("case"+j+i).setFill(Paint.valueOf(this.colorPlayer1));
+
 				}
 				if(grille.getCase(i, j) == Constantes.SYMBOLE_J2) {
 					cases.get("case"+j+i).setFill(Paint.valueOf(this.colorPlayer2));
