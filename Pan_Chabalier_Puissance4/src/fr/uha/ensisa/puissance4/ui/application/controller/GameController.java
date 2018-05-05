@@ -1,6 +1,5 @@
 package fr.uha.ensisa.puissance4.ui.application.controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,14 +11,12 @@ import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
 import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
@@ -325,21 +322,11 @@ public class GameController extends Thread implements Initializable {
 	}
 
 	public void backToMenu() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
-			AnchorPane choiceView = (AnchorPane) loader.load();
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
 
-			this.gamePane.setVisible(false);
-			this.choiceController.getChoicePane().setVisible(true);
-			
-			
-//			root.setCenter(choiceView);
-			
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.gamePane.setVisible(false);
+		this.choiceController.getChoicePane().setVisible(true);
 	}
 
 	private void tour(Partie partie) {
