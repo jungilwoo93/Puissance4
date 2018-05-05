@@ -2,6 +2,7 @@ package fr.uha.ensisa.puissance4.ui.application;
 
 import java.io.IOException;
 
+import fr.uha.ensisa.puissance4.data.Joueur;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -62,4 +63,5 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 }

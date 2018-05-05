@@ -3,6 +3,10 @@ package fr.uha.ensisa.puissance4.ui.application.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import fr.uha.ensisa.puissance4.data.Humain;
+import fr.uha.ensisa.puissance4.data.IA;
+import fr.uha.ensisa.puissance4.data.Joueur;
+import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -13,6 +17,9 @@ import javafx.scene.text.Text;
 
 public class ChoiceController implements Initializable {
 
+    private Joueur player1;
+    private Joueur player2;
+	
 	@FXML
 	private TextField player1HumanName;
 		
@@ -62,6 +69,7 @@ public class ChoiceController implements Initializable {
 		if(player1ChoiceHuman.isFocused()) {
 			player1ChoiceIA.setSelected(false);
 		}
+		checkAllPlayerChoosed();
 	}
 	
 	public void tooglePlayer2TypeChoice() {
@@ -71,6 +79,37 @@ public class ChoiceController implements Initializable {
 		if(player2ChoiceHuman.isFocused()) {
 			player2ChoiceIA.setSelected(false);
 		}
+		checkAllPlayerChoosed();
+	}
+	
+	public boolean checkAllPlayerChoosed() {
+		if((player1ChoiceIA.isSelected() || player1ChoiceHuman.isSelected()) && (player2ChoiceIA.isSelected() || player2ChoiceHuman.isSelected())){
+			startButton.setDisable(false);
+			warningStartLabel.setVisible(false);
+		}else {
+			startButton.setDisable(true);
+			warningStartLabel.setVisible(true);
+		}
+		return false;
+	}
+	
+	public void startGame() {
+		if(player1ChoiceIA.isSelected()) {
+			String nom = Constantes.IA_NAMES[(int)Math.floor(Math.random()*Constantes.IA_NAMES.length)];
+			int algoIA1 = (int) this.player1AlgoIA.getValue();
+			this.player1 = new IA(nom, 1, algoIA1, Integer.parseInt(this.player1IALvl.getText()));
+		}else {		
+			this.player1 = new Humain(player1HumanName.getText(),1);
+		}
+		if(player2ChoiceIA.isSelected()) {
+			String nom = Constantes.IA_NAMES[(int)Math.floor(Math.random()*Constantes.IA_NAMES.length)];
+			int algoIA1 = (int) this.player2AlgoIA.getValue();
+			this.player2 = new IA(nom, 2, algoIA1, Integer.parseInt(this.player2IALvl.getText()));
+		}else {
+			this.player2 = new Humain(player2HumanName.getText(),1);
+		}
+		
+
 	}
 	
 	//Getters and setters
@@ -241,6 +280,38 @@ public class ChoiceController implements Initializable {
 	 */
 	public void setWarningStartLabel(Text warningStartLabel) {
 		this.warningStartLabel = warningStartLabel;
+	}
+
+
+	/**
+	 * @return the player1
+	 */
+	public Joueur getPlayer1() {
+		return player1;
+	}
+
+
+	/**
+	 * @param player1 the player1 to set
+	 */
+	public void setPlayer1(Joueur player1) {
+		this.player1 = player1;
+	}
+
+
+	/**
+	 * @return the player2
+	 */
+	public Joueur getPlayer2() {
+		return player2;
+	}
+
+
+	/**
+	 * @param player2 the player2 to set
+	 */
+	public void setPlayer2(Joueur player2) {
+		this.player2 = player2;
 	}
 	
 	
