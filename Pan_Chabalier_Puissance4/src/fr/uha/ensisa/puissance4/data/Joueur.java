@@ -75,5 +75,7 @@ public abstract class Joueur {
 	 */
 	public abstract int joue(Grille grille, Console console, int tour);
 	
+	public abstract int joue(Grille grille, int tour);
+	
 
 }

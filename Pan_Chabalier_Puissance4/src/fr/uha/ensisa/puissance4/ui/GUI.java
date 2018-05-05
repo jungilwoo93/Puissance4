@@ -1,24 +1,27 @@
-package fr.uha.ensisa.puissance4.ui.application;
+package fr.uha.ensisa.puissance4.ui;
 
 import java.io.IOException;
 
-import fr.uha.ensisa.puissance4.data.Joueur;
+import fr.uha.ensisa.puissance4.ui.application.controller.ChoiceController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class GUI extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private ChoiceController choiceController;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Puissance 4");
+        this.primaryStage.getIcons().add(new Image(GUI.class.getResourceAsStream("application/ressources/icon.png")));
 
         initRootLayout();
 
@@ -32,7 +35,7 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/RootView.fxml"));
+            loader.setLocation(GUI.class.getResource("application/view/RootView.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -51,15 +54,23 @@ public class Main extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/ChoiceOverview.fxml"));
+            loader.setLocation(GUI.class.getResource("application/view/ChoiceOverview.fxml"));
             AnchorPane choiceOverview = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(choiceOverview);
+            
+            //get the choice view controller
+            this.choiceController = loader.getController();
+            this.choiceController.setRoot(rootLayout);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+
+    
 	public static void main(String[] args) {
 		launch(args);
 	}

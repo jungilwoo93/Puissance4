@@ -141,7 +141,6 @@ public class Console extends Thread {
 
 	public void afficherCoup(Joueur joueurCourant, int coup, long t) {
 		System.out.println(joueurCourant.getNom() +" a choisi de mettre un jeton dans la colonne "+(coup+1)+" après "+timeToString(t)+" de réflexion\n");
-		
 	}
 
 	public void afficherFinPartie(Partie partie) {

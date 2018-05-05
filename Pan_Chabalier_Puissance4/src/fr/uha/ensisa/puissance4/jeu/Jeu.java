@@ -15,6 +15,7 @@ public class Jeu extends Thread{
 		this.console=console;
 	}
 	
+	
 	public void run()
 	{
 		console.lancementPartie(partie.getJoueur1(), partie.getJoueur2());

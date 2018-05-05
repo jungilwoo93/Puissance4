@@ -1,24 +1,33 @@
 package fr.uha.ensisa.puissance4.ui.application.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import fr.uha.ensisa.puissance4.data.Humain;
 import fr.uha.ensisa.puissance4.data.IA;
 import fr.uha.ensisa.puissance4.data.Joueur;
+import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
 public class ChoiceController implements Initializable {
 
 	private Joueur player1;
 	private Joueur player2;
+	private boolean gameReady = false;
+
+	@FXML
+	private AnchorPane choicePane;
 
 	@FXML
 	private TextField player1HumanName;
@@ -55,6 +64,8 @@ public class ChoiceController implements Initializable {
 
 	@FXML
 	private Text warningStartLabel;
+	
+	private BorderPane root;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -128,8 +139,32 @@ public class ChoiceController implements Initializable {
 			}
 			this.player2 = new Humain(nom, 2);
 		}
-		
-		//TODO change scene
+
+		this.gameReady = true;
+		launchGame(player1, player2);
+	}
+
+	public void launchGame(Joueur j1, Joueur j2) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(GUI.class.getResource("application/view/GameView.fxml"));
+			AnchorPane gameView = (AnchorPane) loader.load();
+
+			
+			GameController gameController = loader.getController();
+			gameController.setPlayer1(j1);
+			gameController.setPlayer2(j2);
+			gameController.setCurrentPlayer(j1);
+			
+			choicePane.setVisible(false);
+			root.getChildren().remove(choicePane);
+			root.setCenter(gameView);
+			
+			gameController.start();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Getters and setters
@@ -315,6 +350,21 @@ public class ChoiceController implements Initializable {
 	}
 
 	/**
+	 * @return the choicePane
+	 */
+	public AnchorPane getChoicePane() {
+		return choicePane;
+	}
+
+	/**
+	 * @param choicePane
+	 *            the choicePane to set
+	 */
+	public void setChoicePane(AnchorPane choicePane) {
+		this.choicePane = choicePane;
+	}
+
+	/**
 	 * @return the player1
 	 */
 	public Joueur getPlayer1() {
@@ -344,4 +394,15 @@ public class ChoiceController implements Initializable {
 		this.player2 = player2;
 	}
 
+	public boolean isGameReady() {
+		return gameReady;
+	}
+
+	public void setGameReady(boolean gameReady) {
+		this.gameReady = gameReady;
+	}
+
+	public void setRoot(BorderPane rootLayout) {
+		this.root = rootLayout;
+	}
 }
