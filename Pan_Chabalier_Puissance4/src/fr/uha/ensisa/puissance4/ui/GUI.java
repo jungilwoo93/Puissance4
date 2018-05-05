@@ -26,6 +26,8 @@ public class GUI extends Application {
         initRootLayout();
 
         showChoiceOverview();
+        
+        
     }
     
     /**
@@ -54,11 +56,11 @@ public class GUI extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("application/view/ChoiceOverview.fxml"));
-            AnchorPane choiceOverview = (AnchorPane) loader.load();
+            loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
+            AnchorPane choiceView = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
-            rootLayout.setCenter(choiceOverview);
+            rootLayout.setCenter(choiceView);
             
             //get the choice view controller
             this.choiceController = loader.getController();
@@ -68,9 +70,7 @@ public class GUI extends Application {
             e.printStackTrace();
         }
     }
-    
-
-    
+        
 	public static void main(String[] args) {
 		launch(args);
 	}

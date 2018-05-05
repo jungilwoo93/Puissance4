@@ -1,22 +1,31 @@
 package fr.uha.ensisa.puissance4.ui.application.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
+import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
-import fr.uha.ensisa.puissance4.util.Constantes.Case;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
@@ -29,6 +38,8 @@ public class GameController extends Thread implements Initializable {
 	private Joueur player1;
 	private Joueur player2;
 	private Joueur currentPlayer;
+	private BorderPane root;
+	private ChoiceController choiceController;
 
 	ArrayList<Button> buttons = new ArrayList<Button>();
 	private String display;
@@ -42,6 +53,9 @@ public class GameController extends Thread implements Initializable {
 
 	@FXML
 	private TextArea displayArea;
+
+	@FXML
+	private Button endButton;
 
 	@FXML
 	private Button buttonCol1;
@@ -235,6 +249,13 @@ public class GameController extends Thread implements Initializable {
 		buttons.add(buttonCol6);
 		buttons.add(buttonCol7);
 		this.displayArea.setEditable(false);
+		this.displayArea.textProperty().addListener(new ChangeListener<Object>() {
+			@Override
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+				displayArea.setScrollTop(Double.MAX_VALUE); // this will scroll to the bottom
+				// use Double.MIN_VALUE to scroll to the top
+			}
+		});
 
 		this.cases.put("case00", case00);
 		this.cases.put("case01", case01);
@@ -289,19 +310,58 @@ public class GameController extends Thread implements Initializable {
 		display += "Joueur 2 : " + this.player2.getNom() + " (" + this.player2.getTypeNom() + ")"
 				+ System.lineSeparator();
 		this.displayArea.setText(display);
+		this.displayArea.appendText("");
 
 		Partie partie = new Partie(this.player1, this.player2);
-		while (!partie.isPartieFinie()) {
+
+		tour(partie);
+
+		display += afficherFinPartie(partie);
+		this.displayArea.setText(display);
+		this.displayArea.appendText("");
+
+		this.endButton.setVisible(true);
+
+	}
+
+	public void backToMenu() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
+			AnchorPane choiceView = (AnchorPane) loader.load();
+
+			this.gamePane.setVisible(false);
+			this.choiceController.getChoicePane().setVisible(true);
+			
+			
+//			root.setCenter(choiceView);
+			
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void tour(Partie partie) {
+		if (!partie.isPartieFinie()) {
 			display += "************* Tour " + partie.getTour() + " ************" + System.lineSeparator();
 			display += "C'est à " + partie.getJoueurCourant().getNom() + " de jouer !" + System.lineSeparator();
 			this.displayArea.setText(display);
+			this.displayArea.appendText("");
 			afficheGrille(partie.getGrille());
 
 			long tempsReflexion = System.currentTimeMillis();
 
 			if (partie.getJoueurCourant().getType() == 1) { // si le joueur est humain
-				while (this.coup == 0)
-					; // on attend que coup change
+				TextInputDialog inDialog = new TextInputDialog("1");
+				inDialog.setTitle("choix du coup");
+				inDialog.setHeaderText("Choissisez votre coup");
+				inDialog.setContentText("Coup :");
+				Optional<String> textIn = inDialog.showAndWait();
+				if (textIn.isPresent()) {
+					coup = Integer.parseInt(textIn.get()) - 1;
+				}
+
 			} else {
 				this.coup = partie.getJoueurCourant().joue(partie.getGrille(), partie.getTour());
 			}
@@ -312,29 +372,31 @@ public class GameController extends Thread implements Initializable {
 					+ (this.coup + 1) + " après " + timeToString(tempsReflexion) + " de réflexion"
 					+ System.lineSeparator();
 			this.displayArea.setText(display);
+			this.displayArea.appendText("");
+			this.displayArea.appendText("");
 
 			if (!partie.jouerCoup(coup, tempsReflexion)) {
 				display += "COUP INVALIDE : Recommencez !" + System.lineSeparator();
 				this.displayArea.setText(display);
+				this.displayArea.appendText("");
 			}
 			this.coup = 0;
+			tour(partie);
 		}
-		display += afficherFinPartie(partie);
-		this.displayArea.setText(display);
 	}
 
 	private void afficheGrille(Grille grille) {
-		for (int i = Constantes.NB_LIGNES-1; i >= 0; i--) {
-			for (int j=0;j<Constantes.NB_COLONNES;j++) {
-				if(grille.getCase(i, j) == Constantes.SYMBOLE_J1) {
-					cases.get("case"+j+i).setFill(Paint.valueOf(this.colorPlayer1));
-
+		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
+			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
+				if (grille.getCase(i, j) == Constantes.SYMBOLE_J1) {
+					cases.get("case" + j + i).setFill(Paint.valueOf(this.colorPlayer1));
 				}
-				if(grille.getCase(i, j) == Constantes.SYMBOLE_J2) {
-					cases.get("case"+j+i).setFill(Paint.valueOf(this.colorPlayer2));
+				if (grille.getCase(i, j) == Constantes.SYMBOLE_J2) {
+					cases.get("case" + j + i).setFill(Paint.valueOf(this.colorPlayer2));
 				}
-				if(grille.getCase(i, j) == Constantes.SYMBOLE_V) {
-//					cases.get("case"+j+i).setFill(Paint.valueOf(this.colorEmpty));
+				if (grille.getCase(i, j) == Constantes.SYMBOLE_V) {
+					// cases.get("case"+j+i).setFill(Paint.valueOf(this.colorEmpty)); // in case of
+					// non white background
 				}
 			}
 		}
@@ -344,13 +406,13 @@ public class GameController extends Thread implements Initializable {
 		String msg;
 		switch (partie.getEtatPartie()) {
 		case Constantes.VICTOIRE_JOUEUR_1:
-			msg = "VICTOIRE " + partie.getJoueur1().getNom()+ System.lineSeparator();
+			msg = "VICTOIRE " + partie.getJoueur1().getNom() + System.lineSeparator();
 			break;
 		case Constantes.VICTOIRE_JOUEUR_2:
-			msg = "VICTOIRE " + partie.getJoueur2().getNom()+ System.lineSeparator();
+			msg = "VICTOIRE " + partie.getJoueur2().getNom() + System.lineSeparator();
 			break;
 		default:
-			msg = "MATCH NUL"+ System.lineSeparator();
+			msg = "MATCH NUL" + System.lineSeparator();
 			break;
 		}
 		msg += "************ " + msg + " en " + (partie.getTour() - 1) + " tours ***************"
@@ -480,6 +542,21 @@ public class GameController extends Thread implements Initializable {
 		this.gamePane = gamePane;
 	}
 
+	/**
+	 * @return the root
+	 */
+	public BorderPane getRoot() {
+		return root;
+	}
+
+	/**
+	 * @param root
+	 *            the root to set
+	 */
+	public void setRoot(BorderPane root) {
+		this.root = root;
+	}
+
 	private String timeToString(long t) {
 		String s = "";
 		if (t > 3600000) {
@@ -501,6 +578,14 @@ public class GameController extends Thread implements Initializable {
 			s += t + "ms";
 		}
 		return s;
+	}
+
+	public ChoiceController getChoiceController() {
+		return choiceController;
+	}
+
+	public void setChoiceController(ChoiceController choiceController) {
+		this.choiceController = choiceController;
 	}
 
 }

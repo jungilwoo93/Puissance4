@@ -160,6 +160,7 @@ public class ChoiceController implements Initializable {
 			root.getChildren().remove(choicePane);
 			root.setCenter(gameView);
 			
+			gameController.setChoiceController(this);
 			gameController.start();
 
 		} catch (IOException e) {
