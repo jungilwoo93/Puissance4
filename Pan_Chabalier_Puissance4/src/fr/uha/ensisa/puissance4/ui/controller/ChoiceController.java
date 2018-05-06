@@ -1,4 +1,4 @@
-package fr.uha.ensisa.puissance4.ui.application.controller;
+package fr.uha.ensisa.puissance4.ui.controller;
 
 import java.io.IOException;
 import java.net.URL;
@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import fr.uha.ensisa.puissance4.data.Humain;
 import fr.uha.ensisa.puissance4.data.IA;
 import fr.uha.ensisa.puissance4.data.Joueur;
-import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

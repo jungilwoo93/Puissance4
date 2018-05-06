@@ -1,8 +1,7 @@
-package fr.uha.ensisa.puissance4.ui;
+package fr.uha.ensisa.puissance4.ui.controller;
 
 import java.io.IOException;
 
-import fr.uha.ensisa.puissance4.ui.application.controller.ChoiceController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

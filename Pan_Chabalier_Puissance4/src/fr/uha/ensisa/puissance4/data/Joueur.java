@@ -1,6 +1,6 @@
 package fr.uha.ensisa.puissance4.data;
 
-import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.controller.Console;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import fr.uha.ensisa.puissance4.util.Constantes.Case;
 

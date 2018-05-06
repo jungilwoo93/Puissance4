@@ -1,4 +1,4 @@
-package fr.uha.ensisa.puissance4.ui.application.controller;
+package fr.uha.ensisa.puissance4.ui.controller;
 
 import java.awt.Desktop;
 import java.io.IOException;
