@@ -204,6 +204,7 @@ public class GameController extends Thread implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		//these event are not used now. On further version could be used (When choice player will be done with button click)
 		buttonCol1.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent me) {
 				coup = Integer.parseInt(buttonCol1.getText()) - 1;
@@ -246,8 +247,9 @@ public class GameController extends Thread implements Initializable {
 		buttons.add(buttonCol5);
 		buttons.add(buttonCol6);
 		buttons.add(buttonCol7);
-		this.displayArea.setEditable(false);
-		this.displayArea.textProperty().addListener(new ChangeListener<Object>() {
+		this.displayArea.setEditable(false); //display area is the area where is shown all operation
+		this.displayArea.textProperty().addListener(new ChangeListener<Object>() {//scroll to the bottom of the area
+			//to have better reading of the area
 			@Override
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				displayArea.setScrollTop(Double.MAX_VALUE); // this will scroll to the bottom
@@ -299,6 +301,11 @@ public class GameController extends Thread implements Initializable {
 		this.cases.put("case65", case65);
 	}
 
+	/**
+	 * start of the game. create the "partie" and print initial state
+	 * invoke @see {@link #tour(Partie)}
+	 * At the end of game, set visible the reboot button
+	 */
 	public void start() {
 		setButtonColorToCurrent();
 
@@ -308,7 +315,7 @@ public class GameController extends Thread implements Initializable {
 		display += "Joueur 2 : " + this.player2.getNom() + " (" + this.player2.getTypeNom() + ")"
 				+ System.lineSeparator();
 		this.displayArea.setText(display);
-		this.displayArea.appendText("");
+		this.displayArea.appendText(""); //force the handling of changing text
 
 		Partie partie = new Partie(this.player1, this.player2);
 
@@ -322,6 +329,10 @@ public class GameController extends Thread implements Initializable {
 
 	}
 
+	/**
+	 * load the choice panel
+	 * NOT FUNCTIONNAL
+	 */
 	public void backToMenu() {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
@@ -330,6 +341,11 @@ public class GameController extends Thread implements Initializable {
 		this.choiceController.getChoicePane().setVisible(true);
 	}
 
+	/**
+	 * Manage one turn.
+	 * if game is not endend, launch another tour
+	 * @param partie
+	 */
 	private void tour(Partie partie) {
 		if (!partie.isPartieFinie()) {
 			display += "************* Tour " + partie.getTour() + " ************" + System.lineSeparator();
@@ -340,13 +356,13 @@ public class GameController extends Thread implements Initializable {
 
 			long tempsReflexion = System.currentTimeMillis();
 
-			if (partie.getJoueurCourant().getType() == 1) { // si le joueur est humain
+			if (partie.getJoueurCourant().getType() == 1) { // if player is human
 				TextInputDialog inDialog = new TextInputDialog("1");
 				inDialog.setTitle("choix du coup");
 				inDialog.setHeaderText("Choissisez votre coup");
 				inDialog.setContentText("Coup :");
-				inDialog.initModality(Modality.NONE);
-				Optional<String> textIn = inDialog.showAndWait();
+				inDialog.initModality(Modality.NONE); //put dialob box in none modal. Doesn't lock main window 
+				Optional<String> textIn = inDialog.showAndWait(); //wait the player choice
 				if (textIn.isPresent()) {
 					coup = Integer.parseInt(textIn.get()) - 1;
 				}
@@ -372,8 +388,13 @@ public class GameController extends Thread implements Initializable {
 			this.coup = 0;
 			tour(partie);
 		}
+		setButtonColorToCurrent();
 	}
 
+	/**
+	 * Display the grille. Reprint each cases by their color
+	 * @param grille grille to display
+	 */
 	private void afficheGrille(Grille grille) {
 		for (int i = Constantes.NB_LIGNES - 1; i >= 0; i--) {
 			for (int j = 0; j < Constantes.NB_COLONNES; j++) {
@@ -391,6 +412,11 @@ public class GameController extends Thread implements Initializable {
 		}
 	}
 
+	/**
+	 * Create the string to display.  
+	 * @param partie partie wich get the informations
+	 * @return String of end of game
+	 */
 	private String afficherFinPartie(Partie partie) {
 		String msg;
 		switch (partie.getEtatPartie()) {
@@ -414,16 +440,21 @@ public class GameController extends Thread implements Initializable {
 		return msg += "******************************************************************" + System.lineSeparator();
 	}
 
+	/**
+	 * fuction to switch button color to current player color
+	 * @deprecated
+	 * Not uesed.
+	 */
 	public void setButtonColorToCurrent() {
-		if (this.currentPlayer.getOrder() == 1) {
-			for (Button b : this.buttons) {
-				b.setStyle("-fx-background-color:" + this.colorPlayer1.toLowerCase() + ";");
-			}
-		} else {
-			for (Button b : this.buttons) {
-				b.setStyle("-fx-background-color:" + this.colorPlayer2.toLowerCase() + ";");
-			}
-		}
+//		if (this.currentPlayer.getOrder() == 1) {
+//			for (Button b : this.buttons) {
+//				b.setStyle("-fx-background-color:" + this.colorPlayer1.toLowerCase() + ";");
+//			}
+//		} else {
+//			for (Button b : this.buttons) {
+//				b.setStyle("-fx-background-color:" + this.colorPlayer2.toLowerCase() + ";");
+//			}
+//		}
 	}
 
 	/**

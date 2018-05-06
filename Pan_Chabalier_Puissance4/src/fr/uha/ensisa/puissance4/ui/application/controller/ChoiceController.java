@@ -69,10 +69,16 @@ public class ChoiceController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		startButton.setDisable(true);
+		startButton.setDisable(true); //Disable to not allow user to start game without choosing players
 	}
 
-	public void tooglePlayer1TypeChoice() {
+	/**
+	 * User player choices are allowed with checkbox. this method block multiple choice of player type. 
+	 * User can check IA and Human at the same time
+	 * Used only by player 1 checkboxes
+	 * @see #tooglePlayer2TypeChoice()
+	 */
+	public void tooglePlayer1TypeChoice() { 
 		if (player1ChoiceIA.isFocused()) {
 			player1ChoiceHuman.setSelected(false);
 		}
@@ -82,6 +88,12 @@ public class ChoiceController implements Initializable {
 		checkAllPlayerChoosed();
 	}
 
+	/**
+	 * User player choices are allowed with checkbox. this method block multiple choice of player type. 
+	 * User can check IA and Human at the same time
+	 * Used only by player 2 checkboxes
+	 * @see #tooglePlayer1TypeChoice()
+	 */
 	public void tooglePlayer2TypeChoice() {
 		if (player2ChoiceIA.isFocused()) {
 			player2ChoiceHuman.setSelected(false);
@@ -92,6 +104,11 @@ public class ChoiceController implements Initializable {
 		checkAllPlayerChoosed();
 	}
 
+	/**
+	 * Check if all player type is choosed, and if true, enable the start button
+	 * Invoked by players type checkboxes
+	 * @return true if one checkbox is check for each player
+	 */
 	public boolean checkAllPlayerChoosed() {
 		if ((player1ChoiceIA.isSelected() || player1ChoiceHuman.isSelected())
 				&& (player2ChoiceIA.isSelected() || player2ChoiceHuman.isSelected())) {
@@ -104,18 +121,23 @@ public class ChoiceController implements Initializable {
 		return false;
 	}
 
+	/**
+	 * Prepare the game by creating players and launching the game view with theses players
+	 * If IA values are not changed, by default, algorithm is Min-Max, difficulty 1
+	 * Invoked by @see #startButton
+	 */
 	public void startGame() {
-		if (player1ChoiceIA.isSelected()) {
+		if (player1ChoiceIA.isSelected()) { 
 			String nom = Constantes.IA_NAMES[(int) Math.floor(Math.random() * Constantes.IA_NAMES.length)];
 			int algoIA1 = (int) this.player1AlgoIA.getValue();
-			try {
+			try { //is the field player1IALvl is empty, catching the exception and give to IA difficulty lvl 1
 				this.player1 = new IA(nom, 1, algoIA1, Integer.parseInt(this.player1IALvl.getText()));
 			} catch (NumberFormatException nbE) {
 				this.player1 = new IA(nom, 1, algoIA1, 1);
 			}
 		} else {
 			String nom;
-			if (player1HumanName.getText().length() == 0) {
+			if (player1HumanName.getText().length() == 0) { //if player name is not provided, by default will be player 1
 				nom = "Player 1";
 			} else {
 				nom = player1HumanName.getText();
@@ -144,18 +166,26 @@ public class ChoiceController implements Initializable {
 		launchGame(player1, player2);
 	}
 
+	/**
+	 * launch the game view and give to it the two players
+	 * @param j1 player 1
+	 * @param j2 player 2
+	 */
 	public void launchGame(Joueur j1, Joueur j2) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
+			//Load the view which manage the game
 			loader.setLocation(GUI.class.getResource("application/view/GameView.fxml"));
 			AnchorPane gameView = (AnchorPane) loader.load();
 
 			
 			GameController gameController = loader.getController();
+			//After getting the controler of the game view, we set player as created in choice view
 			gameController.setPlayer1(j1);
 			gameController.setPlayer2(j2);
 			gameController.setCurrentPlayer(j1);
 			
+			//we remove choice panel to replace it by the game panel
 			choicePane.setVisible(false);
 			root.getChildren().remove(choicePane);
 			root.setCenter(gameView);

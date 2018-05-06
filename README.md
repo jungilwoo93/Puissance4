@@ -9,6 +9,7 @@ PAN Liuyan , CHABALIER Andy
 
 <u>**Projet Intelligence Artificielle ENSISA 2A IR**</u>
 
+Repository git du projet: [repo git](https://git.chabalier.com/snowert/puissance4)
 
 <u>Objectifs</u>
 
