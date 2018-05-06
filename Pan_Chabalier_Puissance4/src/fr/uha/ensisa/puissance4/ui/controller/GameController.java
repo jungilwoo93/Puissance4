@@ -1,4 +1,4 @@
-package fr.uha.ensisa.puissance4.ui.application.controller;
+package fr.uha.ensisa.puissance4.ui.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
-import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -325,7 +324,7 @@ public class GameController extends Thread implements Initializable {
 		this.displayArea.setText(display);
 		this.displayArea.appendText("");
 
-		this.endButton.setVisible(true);
+//		this.endButton.setVisible(true); //not functionnal. Then, don't set visible
 
 	}
 
