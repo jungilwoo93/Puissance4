@@ -104,7 +104,6 @@ Pour les deux algorithmes Min-Max et Alpha-Beta, le choix du coup à est légèr
 par coup initiaux, soit septs. C'est un pool de threads qui s'occupe de leur création et génération.
 
 **Extrait de l'algorithme Alpha-Beta:**
-
 		ExecutorService threadPoolExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime,
 				TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 
@@ -124,7 +123,7 @@ par coup initiaux, soit septs. C'est un pool de threads qui s'occupe de leur cr�
 				}
 			});
 		}
-
+		
 		try {
 			threadPoolExecutor.shutdown(); //Lock the Pool, execute all previous submited task.
 			threadPoolExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS); //Wait for task's execution
