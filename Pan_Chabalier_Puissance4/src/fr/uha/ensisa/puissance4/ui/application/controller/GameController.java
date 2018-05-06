@@ -25,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.stage.Modality;
 
 public class GameController extends Thread implements Initializable {
 
@@ -344,6 +345,7 @@ public class GameController extends Thread implements Initializable {
 				inDialog.setTitle("choix du coup");
 				inDialog.setHeaderText("Choissisez votre coup");
 				inDialog.setContentText("Coup :");
+				inDialog.initModality(Modality.NONE);
 				Optional<String> textIn = inDialog.showAndWait();
 				if (textIn.isPresent()) {
 					coup = Integer.parseInt(textIn.get()) - 1;
