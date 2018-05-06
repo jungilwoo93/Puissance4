@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane fx:id="gamePane" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.application.controller.GameController">
+<AnchorPane fx:id="gamePane" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.uha.ensisa.puissance4.ui.controller.GameController">
    <children>
    	  <Circle fx:id="case05" fill="WHITE" layoutX="274.0" layoutY="32.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fx:id="case04" fill="WHITE" layoutX="275.0" layoutY="74.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />

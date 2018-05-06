@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import fr.uha.ensisa.puissance4.data.Humain;
 import fr.uha.ensisa.puissance4.data.IA;
 import fr.uha.ensisa.puissance4.data.Joueur;
+import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -174,7 +175,7 @@ public class ChoiceController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			//Load the view which manage the game
-			loader.setLocation(GUI.class.getResource("application/view/GameView.fxml"));
+			loader.setLocation(GUI.class.getResource("view/GameView.fxml"));
 			AnchorPane gameView = (AnchorPane) loader.load();
 
 			

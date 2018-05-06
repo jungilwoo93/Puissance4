@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import fr.uha.ensisa.puissance4.data.Grille;
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
+import fr.uha.ensisa.puissance4.ui.GUI;
 import fr.uha.ensisa.puissance4.util.Constantes;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -334,7 +335,7 @@ public class GameController extends Thread implements Initializable {
 	 */
 	public void backToMenu() {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
+		loader.setLocation(GUI.class.getResource("view/ChoiceView.fxml"));
 
 		this.gamePane.setVisible(false);
 		this.choiceController.getChoicePane().setVisible(true);

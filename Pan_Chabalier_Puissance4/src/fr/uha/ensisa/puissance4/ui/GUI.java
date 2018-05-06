@@ -1,7 +1,8 @@
-package fr.uha.ensisa.puissance4.ui.controller;
+package fr.uha.ensisa.puissance4.ui;
 
 import java.io.IOException;
 
+import fr.uha.ensisa.puissance4.ui.controller.ChoiceController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,7 +21,7 @@ public class GUI extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Puissance 4");
-        this.primaryStage.getIcons().add(new Image(GUI.class.getResourceAsStream("application/ressources/icon.png")));
+        this.primaryStage.getIcons().add(new Image(GUI.class.getResourceAsStream("ressources/icon.png")));
 
         initRootLayout();
 
@@ -36,7 +37,7 @@ public class GUI extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("application/view/RootView.fxml"));
+            loader.setLocation(GUI.class.getResource("view/RootView.fxml"));
             rootLayout = (BorderPane) loader.load();
 
             // Show the scene containing the root layout.
@@ -55,7 +56,7 @@ public class GUI extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(GUI.class.getResource("application/view/ChoiceView.fxml"));
+            loader.setLocation(GUI.class.getResource("view/ChoiceView.fxml"));
             AnchorPane choiceView = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.

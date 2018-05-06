@@ -1,7 +1,7 @@
 package fr.uha.ensisa.puissance4;
 
-import fr.uha.ensisa.puissance4.ui.controller.Console;
-import fr.uha.ensisa.puissance4.ui.controller.GUI;
+import fr.uha.ensisa.puissance4.ui.Console;
+import fr.uha.ensisa.puissance4.ui.GUI;
 
 public abstract class Puissance4 {
 

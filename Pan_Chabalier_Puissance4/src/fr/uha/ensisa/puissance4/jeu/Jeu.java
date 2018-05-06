@@ -2,7 +2,7 @@ package fr.uha.ensisa.puissance4.jeu;
 
 import fr.uha.ensisa.puissance4.data.Joueur;
 import fr.uha.ensisa.puissance4.data.Partie;
-import fr.uha.ensisa.puissance4.ui.controller.Console;
+import fr.uha.ensisa.puissance4.ui.Console;
 
 public class Jeu extends Thread{
 	

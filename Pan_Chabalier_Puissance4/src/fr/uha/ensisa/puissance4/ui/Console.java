@@ -1,4 +1,4 @@
-package fr.uha.ensisa.puissance4.ui.controller;
+package fr.uha.ensisa.puissance4.ui;
 
 import java.util.Scanner;
 

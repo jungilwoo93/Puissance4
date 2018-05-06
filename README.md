@@ -88,8 +88,8 @@ le package ["UI"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Ch
 Parmis les controlleurs, le controlleur de la console s'occupe de faire le pont entre la partie
 et les vues qui sont les entrées et sorties standards.
 
-Le controlleur ["GUI"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/controller/GUI.java) s'occupe de lancer l'affichage principal et y inserer la vue de choix. 
-["GUI"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/controller/GUI.java) est couplé avec ["RootView.fxml"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/view/RootView.fxml) et ["MenuController"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/controller/MenuController.java)
+Le controlleur ["GUI"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/GUI.java) s'occupe de lancer l'affichage principal et y inserer la vue de choix. 
+["GUI"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/GUI.java) est couplé avec ["RootView.fxml"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/view/RootView.fxml) et ["MenuController"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/controller/MenuController.java)
 qui gère les évènements de la barre de menu.
 
 Le controlleur ["ChoiceController"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/controller/ChoiceController.java) s'occupe de la gestion de la vue ["ChoiceView.fxml"](https://git.chabalier.com/snowert/puissance4/src/master/Pan_Chabalier_Puissance4/src/fr/uha/ensisa/puissance4/ui/view/ChoiceView.fxml) qui permet de récuperer les choix des joueurs et lancer la partie.
